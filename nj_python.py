@@ -18,7 +18,7 @@ old_nj_df=pd.DataFrame(nj)
 old_nj_df['date'] = pd.to_datetime(old_nj_df['date'], format='%Y-%m-%d') # convert dates into a DATETIME
 
 # Columns needed for NJ
-nj_df = old_nj_df[['date','time','location','subject_race', 'subject_sex','arrest_made','outcome','frisk_performed','search_conducted','vehicle_color','vehicle_make']]
+nj_df = old_nj_df[['date','time','location','subject_race', 'subject_sex','arrest_made','outcome','frisk_performed','search_conducted','vehicle_color','vehicle_make','violation']]
 
 # Minimum and maximum date for NJ
 nj_min_date=nj_df["date"].min() 
@@ -51,32 +51,37 @@ plt.show()'''
 per_capita=[]
 pop_by_year=[8750000,8791000,8753000,8794000,8832000,8874000,8904000,8915000]
 for i in range(len(pop_by_year)):
-    per_capita.append((len(y_axis[i])/pop_by_year[i])*100000)
+    per_capita.append((len(y_axis[i])/pop_by_year[i]))
 
-dates=nj_df['date']
+num_stops_year=[]
+for i in y_axis:
+    num_stops_year=len(i)
 
 
 
-f,ax=plt.subplots(1)
+'''f,ax=plt.subplots(1)
 ax.plot(x_axis,per_capita)
 plt.title("New Jersey Taffic Stop rate P2009-2016")
 plt.xlabel("Year")
 plt.ylabel("Traffic Rate")
 ax.set_ylim(ymin=0)
-plt.show()
+plt.show()'''
 
 #Number of stops by race
-'''num_stops_race={}
+num_stops_race={}
 for stop in nj_df['subject_race']:
     if stop in num_stops_race:
         num_stops_race[stop]+=1
     else:
-        num_stops_race[stop]=1'''
+        num_stops_race[stop]=1
+
 
 num_stops_race={'black': 45119, 'unknown': 3697161, 'hispanic': 25955, 'white': 71929, 'asian/pacific islander': 5071, 'other': 99}
 
 #Number of stops per year by race
-'''rate_stops_race_per_year=[]
+num_stops_race_per_year=[]
+
+rate_stops_race_per_year=[]
 for year in y_axis:
     tmp={}
     for val in year['subject_race']:
@@ -84,10 +89,17 @@ for year in y_axis:
             tmp[val]=1
         else:
             tmp[val]+=1
-    rate_stops_race_per_year.append(tmp)'''
+    num_stops_race_per_year.append(tmp) # adding the num of stop per race in year in array
+    
+
+for i in range(len(num_stops_race_per_year)):
+    tmp={}
+    for key in num_stops_race_per_year[i].keys():
+        tmp[key]=(num_stops_race_per_year[i][key]/pop_by_year[i])
+    rate_stops_race_per_year.append(tmp)
 
 # RATE OF SEXES STOPPED PER YEAR + bar graph of number of stopped by sex 2009-2016
-'''rate_stops_sex_per_year=[]
+num_stops_sex_per_year=[]
 for year in y_axis:
     tmp={}
     for val in year['subject_sex']:
@@ -95,43 +107,46 @@ for year in y_axis:
             tmp[val]=1
         else:
             tmp[val]+=1
-    rate_stops_sex_per_year.append(tmp)
+    num_stops_sex_per_year.append(tmp)
+#print(num_stops_sex_per_year)
 
-sex_per_year={}
-for sex in nj_df['subject_sex']:
-    if sex in sex_per_year:
-        sex_per_year[sex]+=1
-    else:
-        sex_per_year[sex]=1
-print(sex_per_year)
-x_axis=["Male","Female","Unknown/Other"]
+rate_stops_sex_per_year=[]
+for i in range(len(num_stops_sex_per_year)):
+    tmp={}
+    for key in num_stops_sex_per_year[i].keys():
+        tmp[key]=(num_stops_sex_per_year[i][key]/pop_by_year[i])
+    rate_stops_sex_per_year.append(tmp)
+#print(rate_stop_sex_per_year)
+
+'''x_axis=["Male","Female","Unknown/Other"]
 y_axis=list(sex_per_year.values())
 plt.bar(x_axis,y_axis,color='brown')
 plt.title('NUMBER OF STOPS PER SEX -NJ')
 plt.xlabel('Genders')
 plt.ylabel('Amount of Stops')
-plt.show()'''
+plt.show()
 
-
+'''
 # Veichicle color stopped
-'''veh_colors_stopped={}
+type_veh_colors_stopped={}
 for color in nj_df['vehicle_color']:
-    if color in veh_colors_stopped:
-        veh_colors_stopped[color]+=1
+    if color in type_veh_colors_stopped:
+        type_veh_colors_stopped[color]+=1
     else:
-        veh_colors_stopped[color]=1
-print(veh_colors_stopped)'''
+        type_veh_colors_stopped[color]=1
+#print(type_veh_colors_stopped)
 
 
-# RATE OF OUTCOMES 
-'''outcomes={}
+# Number OF OUTCOMES 
+num_outcomes={}
 for oc in nj_df['outcome']:
-    if oc in outcomes:
-        outcomes[oc]+=1
+    if oc in num_outcomes:
+        num_outcomes[oc]+=1
     else:
-        outcomes[oc]=1
+        num_outcomes[oc]=1
 
-rate_outcomes_per_year=[]
+
+num_outcomes_per_year=[]
 for year in y_axis:
     tmp={}
     for val in year['outcome']:
@@ -139,20 +154,57 @@ for year in y_axis:
             tmp[val]=1
         else:
             tmp[val]+=1
+    num_outcomes_per_year.append(tmp)
+
+#print(num_outcomes_per_year)
+rate_outcomes_per_year=[]
+
+for i in range(len(num_outcomes_per_year)):
+    tmp={}
+    for key in num_outcomes_per_year[i].keys():
+        tmp[key]=(num_outcomes_per_year[i][key]/pop_by_year[i])
     rate_outcomes_per_year.append(tmp)
 
-print(rate_outcomes_per_year)'''
+
+
+'''# Reasons for stops
+violations=[]
+for vio in nj_df['violation']:
+    tmp={}
+    if vio in violations:
+        tmp[vio]+=1
+    else:
+        tmp[vio]=1
+    violations.append(tmp)
+with open("//Users/hudaali/Desktop/lonLat_nj.txt","w+") as tmp:
+    tmp.write(str(violations))'''
 
 # Writing results in notes file
-'''with open("/Volumes/T7/Research/Research_programs/States/NEW JERSEY/nj_notes.txt","a+") as nj_notes:
-    #nj_notes.write("NUMBER OF STOPS PER RACE 2009-2016:\t" + str(num_stops_race)+"\n\n")
-    #nj_notes.write("RATE OF STOPS PER YEAR:\t"+ str(per_capita)+"\n\n")
-    #nj_notes.write("NUMBER OF STOPS PER YEAR: "+str(y_axis)+"\n\n")
-    #nj_notes.write("RATE STOPS PER RACE PER YEAR: "+ str(rate_stops_race_per_year)+"\n\n")
-    #nj_notes.write("RATE OF STOPS BY SEX PER YEAR: " +str(rate_stops_sex_per_year)+"\n\n")
-    #nj_notes.write("TYPES OF VEHCLIE COLORS STOPPED: " +str(veh_colors_stopped)+"\n\n")
-    #nj_notes.write("TYPES OF OUTCOMES: " +str(outcomes)+"\n\n")
-    # nj_notes.write("RATE OF OUTCOMES PER YEAR: "+str(rate_outcomes_per_year)+"\n\n")'''
+with open("/Volumes/T7/Research/Research_programs/States/NEW JERSEY/nj_notes.txt","w+") as nj_notes:
+    nj_notes.write("Minimum Sate:\n"+str(nj_min_date)+"\n")
+    nj_notes.write("Maximum Date:\n"+str(nj_max_date)+"\n")
+    nj_notes.write("Aproximation Population over 2009-2016:\n{}\n\n".format(pop_by_year))
+    nj_notes.write("Number of Stops per Year:\n{}\n\n".format(num_stops_year))
+    nj_notes.write("Rate of Stops per Year:\n{}\n\n".format(per_capita))
+    nj_notes.write("Amount of stops by race\n2009-2016:{}\n\n".format(num_stops_race))
+    nj_notes.write("Number of Stops by Race per Year:\n{}\n\n".format(num_stops_race_per_year))
+    nj_notes.write("Rate of Stops by Race:\n{}\n\n".format(rate_stops_race_per_year))
+    nj_notes.write("Number of Stops by Sex per Year:\n{}\n\n".format(num_stops_sex_per_year))
+    nj_notes.write("Rate of Stops by Sex per Year:\n{}\n\n".format(rate_stops_sex_per_year))
+    nj_notes.write("Number of outcomes per Year:\n{}\n\n".format(num_outcomes_per_year))
+    nj_notes.write("Rate of outcomes per Year:\n{}\n\n".format(rate_outcomes_per_year))
+    nj_notes.write("Types of cars Stopped:\n{}\n\n".format(type_veh_colors_stopped))
+
+    
+    
+
+   
+    
+    
+
+
+
+    
 #STOPS PER LOCATION
 """def convert(lst):
     tmp=lst.rfind(',')
@@ -191,11 +243,4 @@ get_LongLat()
 print(no)'''
 
 
-# Reasons for stops
-'''vilation=[]
-for i in range(1000):
-    if((str(old_nj_df['violation'][i])).lower() =='nan'):
-        continue
-    else:
-        vilation.append(old_nj_df['violation'][i])
-'''
+
