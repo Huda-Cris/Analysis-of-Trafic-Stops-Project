@@ -27,7 +27,7 @@ nj_max_date=nj_df["date"].max()
 
 # STOPS PER YEAR
 
-num_of_stops_2009=nj_df.query('20090101 <= date <20100101')
+num_of_stops_2009=nj_df.query('20090101 <= date <20100101' )
 num_of_stops_2010=nj_df.query('20100101 <= date <20110101')
 num_of_stops_2011=nj_df.query('20110101 <= date <20120101')
 num_of_stops_2012=nj_df.query('20120101 <= date <20130101')
