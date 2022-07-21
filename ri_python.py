@@ -234,7 +234,7 @@ for i in range(len(num_outcomes_per_year)):
         tmp[key]=(num_outcomes_per_year[i][key]/len(ri_df))
     rate_outcomes_per_year.append(tmp)
 
-'''with open("/Users/hudaali/Downloads/ri_notes.txt",'w+') as ri_notes:
+with open("/Users/hudaali/Downloads/ri_notes.txt",'w+') as ri_notes:
     ri_notes.write("MINIMUM DATE:\n{}\n\n".format(ri_min_date))
     ri_notes.write("MAXIMUM DATE:\n{}\n\n".format(ri_max_date))
     ri_notes.write("APROXIMATION POPLUATION PER YEAR:\n{}\n\n".format(aprox_ri_pop_year))
@@ -243,16 +243,19 @@ for i in range(len(num_outcomes_per_year)):
     ri_notes.write("RATE OF STOPS PER RACE PER YEAR:\n{}\n\n".format(rate_stops_race_per_year))
     ri_notes.write("STOP RATE BY RACE IN PORTPORTION TO POPULATION DEMOGRAPHIC:\n{}\n\n".format(stop_rate_race_porp_pop))
     ri_notes.write("NUMBER OF STOPS PER SEX PER YEAR:\n{}\n\n".format(num_stops_sex_per_year))
-    ri_notes.write("RATE OF STOPS PER SEX PER YEAR:\n{}\n\n".format(rate_stops_sex_per_year))'''
+    ri_notes.write("RATE OF STOPS PER SEX PER YEAR:\n{}\n\n".format(rate_stops_sex_per_year))
+    ri_notes.write("SEARCH RATES:\n{}\n\n".format(search_rates))
+    ri_notes.write("FRISK RATES\n{}\n\n".format(frisk_rates))
+    ri_notes.write("HIT RATES:\n{}\n\n".format(hit_rates))
     
 
-'''tmp_bk=[]
+tmp_bk=[]
 tmp_yt=[]
 tmp_hp=[]
 tmp_ap=[]
 tmp_ot=[]
 print()
-for dic in num_stops_race_per_year:
+for dic in rate_stops_race_per_year:
     for key in dic.keys():
         if key=='black':
             tmp_bk.append(dic[key])
@@ -274,10 +277,69 @@ colors=['purple','blue','brown','green','yellow']
 for i in range(len(y_axis)):
     plt.plot(x_axis, y_axis[i],label=tmp[i],color=colors[i],marker='o')
 
-plt.title('Number of Traffic Stops by Race per Year')
+plt.title('Rate of Traffic Stops by Race per Year')
+plt.xlabel('Years')
+plt.ylabel('Rate of Stops')
+plt.legend()
+plt.show()
+
+
+'''tmp_ma=[]
+tmp_fem=[]
+tmp_ot=[]
+
+for dic in num_stops_sex_per_year:
+    for key in dic.keys():
+        if key=='male':
+            tmp_ma.append(dic[key])
+        elif key=='female':
+            tmp_fem.append(dic[key])
+        else:
+            tmp_ot.append(dic[key])
+            
+print(tmp_ma)
+print(tmp_fem)
+print(tmp_ot)
+
+        
+
+tmp=["Male","Female","Other"]
+x_axis=years
+y_axis=[tmp_ma,tmp_fem,tmp_ot]
+colors=['purple','blue','brown']
+for i in range(len(y_axis)):
+    plt.plot(x_axis, y_axis[i],label=tmp[i],color=colors[i],marker='o')
+plt.title('Number of Traffic Stops by Sex per Year')
 plt.xlabel('Years')
 plt.ylabel('Number of Stops')
 plt.legend()
+plt.show() '''
+
+
+'''tmp_bk=stop_rate_race_porp_pop['black']
+tmp_yt=stop_rate_race_porp_pop['white']
+tmp_hp=stop_rate_race_porp_pop['hispanic']
+tmp_ap=stop_rate_race_porp_pop['asian/pacific Islander']
+tmp_ot=stop_rate_race_porp_pop['other']
+
+tmp=["Black","White","Hispanic","Asian/pacific Islander","Other"]
+x_axis=years
+y_axis=[tmp_bk,tmp_yt,tmp_hp,tmp_ap,tmp_ot]
+colors=['purple','blue','brown','green','yellow']
+for i in range(len(y_axis)):
+    plt.plot(x_axis, y_axis[i],label=tmp[i],color=colors[i],marker='o')
+
+plt.title('Rate of Traffic Stops by Race per Year in Porportion of Demographic Population Size')
+plt.xlabel('Years')
+plt.ylabel('Rate of Stops')
+plt.legend()
+plt.show()
+'''
+#MARYLAND STOP RATE
+
+'''plt.bar(x_axis,y_axis,color='brown')
+plt.title("Rate of Traffic Stops Maryland 2007-2013")
+plt.xlabel("Years")
+plt.ylabel("NUMBER OF STOPS")
+plt.ylim(ymin=0)
 plt.show()'''
-
-

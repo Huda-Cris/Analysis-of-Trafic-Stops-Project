@@ -9,7 +9,7 @@ import scipy as sp
 
 
 
-ct_files=os.path.join("/Volumes/T7/Research/Research_programs/States/CONNECTICUT/connecticut-r*.csv")
+ct_files=os.path.join("/Users/hudaali/Downloads/cd_data_sets/connecticut-r*.csv")
 
 
 
@@ -24,7 +24,8 @@ ct_df=pd.DataFrame(ct_df)
 ct_df['InterventionDateTime'] = pd.to_datetime(ct_df['InterventionDateTime']).dt.strftime('%Y-%m-%d %H:%M:%S')
 ca_max_date=ct_df['InterventionDateTime'].max()
 ca_min_date=ct_df['InterventionDateTime'].min()
-
+print(ca_max_date)
+print(ca_min_date)
 
 ca_df = ct_df[['InterventionDateTime','SubjectRaceCode', 'SubjectSexCode','InterventionLocationName','ReasonForStop','CustodialArrestIndicator','VehicleSearchedIndicator','SubjectAge']]
 

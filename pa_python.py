@@ -194,7 +194,47 @@ hit_rates.append(contraband_found_ot/search_conducted_ot)
 #hite rate = contraband found/ search conducted
 #Find rate of contraband found per race per district
 #Find search rates per per per district
+p_tmp=pa_df.loc[(pa_df['search_conducted']==True)]
+hit_rate=p_tmp.groupby(['subject_race','district'])['contraband_found'].mean()
 
+
+white_hit_rate_filter=pa_df.loc[(pa_df['search_conducted']==True) & (pa_df['subject_race']=='white')]
+white_hit_rate=white_hit_rate_filter.groupby(['subject_race','district'])['contraband_found'].mean()
+
+minority_hit_filter=pa_df.loc[(pa_df['search_conducted']==True) & (pa_df['subject_race']=='black')|(pa_df['subject_race']=='hispanic')]
+minority_hit_rate=(minority_hit_filter.groupby(['subject_race','district'])['contraband_found']).mean()
+
+tmp_filter=pa_df.loc[(pa_df['subject_race']=='white')]
+num_searches_district=pa_df.groupby(['district'])['search_conducted'].count()
+
+for i in range(len(white_hit_rate)):
+    white_hit_rate[i]=white_hit_rate[i]*100
+for i in range(len(minority_hit_rate)):
+    minority_hit_rate[i]=minority_hit_rate[i]*100
+
+
+plt.scatter(white_hit_rate, minority_hit_rate['black'], facecolors='none', edgecolors='black')
+z = np.polyfit(white_hit_rate, minority_hit_rate['black'], 1)
+p = np.poly1d(z)
+plt.plot(white_hit_rate, p(white_hit_rate),color='brown',linestyle='--',linewidth=1)
+plt.title('Minority Hit Rates v. White Hit Rates')
+plt.xlabel('White Hit Rates')
+plt.ylabel('Minority Hit Rates-BLACK')
+plt.ylim(0,80)
+plt.xlim(0,80)
+plt.legend(loc='best')
+plt.show()
+
+plt.scatter(white_hit_rate, minority_hit_rate['hispanic'],facecolors='none', edgecolors='b')
+z = np.polyfit(white_hit_rate, minority_hit_rate['hispanic'], 1)
+p = np.poly1d(z)
+plt.plot(white_hit_rate, p(white_hit_rate),color='brown',linestyle='--',linewidth=1)
+plt.title('Minority Hit Rates v. White Hit Rates')
+plt.xlabel('White Hit Rates')
+plt.ylabel('Minority Hit Rates-HISPANIC')
+plt.ylim(0,80)
+plt.xlim(0,80)
+plt.show()
 
 # NUMBER OF TIMES VEICLES WERE SEARCHED
 veh_search={}
@@ -217,7 +257,7 @@ for year in num_stops_year:
     num_veh_search_year.append(tmp)
 
 
-'''with open("/Users/hudaali/Downloads/pa_notes.txt",'w+') as pa_notes:
+with open("/Users/hudaali/Downloads/pa_notes.txt",'w+') as pa_notes:
     pa_notes.write("MINIMUM DATE:\n{}\n\n".format(pa_min_date))
     pa_notes.write("MAXIMUM DATE:\n{}\n\n".format(pa_max_date))
     pa_notes.write("APROXIMATION POPLUATION PER YEAR:\n{}\n\n".format(aprox_pa_pop_year))
@@ -227,7 +267,12 @@ for year in num_stops_year:
     pa_notes.write("STOP RATE BY RACE IN PORTPORTION TO POPULATION DEMOGRAPHIC:\n{}\n\n".format(stop_rate_race_porp_pop))
     pa_notes.write("NUMBER OF STOPS PER SEX PER YEAR:\n{}\n\n".format(num_stops_sex_per_year))
     pa_notes.write("RATE OF STOPS PER SEX PER YEAR:\n{}\n\n".format(rate_stops_sex_per_year))
-    pa_notes.write("NUMBER OF VEHICLES SEARCHED PER YEAR:\n{}\n\n".format(num_veh_search_year))'''
+    pa_notes.write("SEARCH RATES:\n{}\n\n".format(search_rates))
+    pa_notes.write("FRISK RATES\n{}\n\n".format(frisk_rates))
+    pa_notes.write("HIT RATES:\n{}\n\n".format(hit_rates))
+    pa_notes.write("WHITE HIT RATES BY DISTRICT:\n{}\n\n".format(white_hit_rate))
+    pa_notes.write("MINORITY (BLACK AND HISPANIC) HIT RATES BY DISTRICT:\n{}\n\n".format(minority_hit_rate))
+    pa_notes.write("NUMBER OF VEHICLES SEARCHED PER YEAR:\n{}\n\n".format(num_veh_search_year))
     
 '''# getting stops per location
 def pa_stopsPerLoc():
@@ -244,41 +289,36 @@ def pa_stopsPerLoc():
             dict.write(str(key))'''
 
 
-tmp_bk=[]
-tmp_yt=[]
-tmp_hp=[]
-tmp_ap=[]
-tmp_ot=[]
+tmp_bk=stop_rate_race_porp_pop['black']
+tmp_yt=stop_rate_race_porp_pop['white']
+tmp_hp=stop_rate_race_porp_pop['hispanic']
+tmp_ap=stop_rate_race_porp_pop['asian/pacific Islander']
+tmp_ot=stop_rate_race_porp_pop['other']
 
-tmp_ma=[]
-tmp_fem=[]
-
-
-
-
-'''for dic in num_stops_sex_per_year:
+'''for dic in num_stops_race_per_year:
     for key in dic.keys():
-        if key=='male':
-            tmp_ma.append(dic[key])
-        elif key=='female':
-            tmp_fem.append(dic[key])
-        else:
-            tmp_ot.append(dic[key])
-            
-print(tmp_ma)
-print(tmp_fem)
-print(tmp_ot)
+        if key=='black':
+            tmp_bk.append(dic[key])
+        elif key=='white':
+            tmp_yt.append(dic[key])
+        elif key=='hispanic':
+            tmp_hp.append(dic[key])
+        elif key=='asian/pacific islander':
+            tmp_ap.append(dic[key])
+        elif key=='other':
+            tmp_ot.append(dic[key])'''
 
-        
 
-tmp=["Male","Female","Other"]
+
+tmp=["Black","White","Hispanic","Asian/pacific Islander","Other"]
 x_axis=years
-y_axis=[tmp_ma,tmp_fem,tmp_ot]
-colors=['purple','blue','brown']
+y_axis=[tmp_bk,tmp_yt,tmp_hp,tmp_ap,tmp_ot]
+colors=['purple','blue','brown','green','yellow']
 for i in range(len(y_axis)):
     plt.plot(x_axis, y_axis[i],label=tmp[i],color=colors[i],marker='o')
-plt.title('Number of Traffic Stops by Sex per Year')
+
+plt.title('Rate of Traffic Stops by Race per Year in Porportion of Demographic Population Size')
 plt.xlabel('Years')
-plt.ylabel('Number of Stops')
+plt.ylabel('Rate of Stops')
 plt.legend()
-plt.show() '''
+plt.show()

@@ -97,7 +97,7 @@ for stop in nj_df['subject_race']:
         num_stops_race[stop]=1
 
 
-num_stops_race={'black': 45119, 'unknown': 3697161, 'hispanic': 25955, 'white': 71929, 'asian/pacific islander': 5071, 'other': 99}
+num_stops_race={'black': 45119, 'unknown': 3697161, 'hispanic': 25955, 'white': 71929, 'asian/pacific Islander': 5071, 'other': 99}
 
 #NUMBER OF STOPS PER YEAR PER RACE
 num_stops_race_per_year=[]
@@ -227,6 +227,9 @@ hit_rates.append(contraband_found_hp/search_conducted_hp)
 hit_rates.append(contraband_found_ap)
 hit_rates.append(contraband_found_ot/search_conducted_ot)
 print(hit_rates)
+
+
+
 # Veichicle color stopped
 type_veh_colors_stopped={}
 for color in nj_df['vehicle_color']:
@@ -280,7 +283,7 @@ with open("//Users/hudaali/Desktop/lonLat_nj.txt","w+") as tmp:
     tmp.write(str(violations))'''
 
 # Writing results in notes file
-with open("/Users/hudaali/Downloads/research_txts_docs\nj_notes.txt","w+") as nj_notes:
+with open("/Users/hudaali/Downloads/nj_notes.txt","w+") as nj_notes:
     nj_notes.write("Minimum Sate:\n"+str(nj_min_date)+"\n")
     nj_notes.write("Maximum Date:\n"+str(nj_max_date)+"\n")
     nj_notes.write("Aproximation Population over 2009-2016:\n{}\n\n".format(aprox_nj_pop_year))
@@ -296,15 +299,50 @@ with open("/Users/hudaali/Downloads/research_txts_docs\nj_notes.txt","w+") as nj
     nj_notes.write("Number of outcomes per Year:\n{}\n\n".format(num_outcomes_per_year))
     nj_notes.write("Rate of outcomes per Year:\n{}\n\n".format(rate_outcomes_per_year))
     nj_notes.write("Types of cars Stopped:\n{}\n\n".format(type_veh_colors_stopped))
+    nj_notes.write("SEARCH RATES:\n{}\n\n".format(search_rates))
+    nj_notes.write("FRISK RATES\n{}\n\n".format(frisk_rates))
+    nj_notes.write("HIT RATES:\n{}\n\n".format(hit_rates))
 
 
-'''tmp_bk=[]
+
+tmp_bk=[]
+tmp_yt=[]
+tmp_hp=[]
+tmp_ap=[]
+tmp_ot=[]
+print()
+for dic in rate_stops_race_per_year:
+    for key in dic.keys():
+        if key=='black':
+            tmp_bk.append(dic[key])
+        elif key=='white':
+            tmp_yt.append(dic[key])
+        elif key=='hispanic':
+            tmp_hp.append(dic[key])
+        elif key=='asian/pacific islander':
+            tmp_ap.append(dic[key])
+        elif key=='other':
+            tmp_ot.append(dic[key])
+
+tmp=["Black","White","Hispanic","Asian/pacific Islander","Other"]
+x_axis=years
+y_axis=[tmp_bk,tmp_yt,tmp_hp,tmp_ap,tmp_ot]
+colors=['purple','blue','brown','green','yellow']
+for i in range(len(y_axis)):
+    plt.plot(x_axis, y_axis[i],label=tmp[i],color=colors[i],marker='o')
+
+plt.title('Rate of Traffic Stops by Race per Year')
+plt.xlabel('Years')
+plt.ylabel('Rate of Stops')
+plt.legend()
+plt.show()
+tmp_bk=[]
 tmp_yt=[]
 tmp_hp=[]
 tmp_ap=[]
 tmp_ot=[]
 
-tmp_ma=[]
+'''tmp_ma=[]
 tmp_fem=[]
 
 
@@ -331,7 +369,7 @@ for i in range(len(y_axis)):
     plt.plot(x_axis, y_axis[i],label=tmp[i],color=colors[i],marker='o')
 plt.title('Rate of Traffic Stops by Sex per Year')
 plt.xlabel('Years')
-plt.ylabel('Number of Stops')
+plt.ylabel('Rate of Stops')
 plt.legend()
 plt.show() '''
 
