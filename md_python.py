@@ -169,6 +169,22 @@ minority_hit_rate=(minority_hit_filter.groupby(['subject_race','department_name'
 tmp_filter=md_df.loc[(md_df['subject_race']=='white')]
 num_searches_district=md_df.groupby(['department_name'])['search_conducted'].count()
 
+reason_stop_sex=old_md_df.groupby(['subject_sex','reason_for_stop']).search_conducted.mean()
+condition = old_md_df.subject_sex.isin(["female", "male"]) & old_md_df.reason_for_stop
+
+search_type_by_sex = (old_md_df[condition].
+  groupby("subject_sex").reason_for_stop.value_counts(normalize = True).unstack()
+)
+# condition = old_md_df.subject_race.isin(["white", "black", "hispanic", "asian"]) & old_md_df.violation
+reason_stop_race=old_md_df.groupby(['subject_race','violation']).search_conducted.max()
+print(reason_stop_race)
+# search_type_by_race = (old_md_df[condition].
+#   groupby("subject_race").violation.value_counts(normalize = True).unstack()
+# )
+# search_type_by_race.plot(kind='bar')
+# plt.title("Proportion of common search types across 4 races")
+# plt.ylabel("Average Number of reasons")
+# plt.show()
 
 with open("/Users/hudaali/Downloads/md_notes.txt",'w+') as md_notes:
     md_notes.write("MINIMUM DATE:\n{}\n\n".format(md_min_date))
@@ -278,9 +294,9 @@ y_axis=rate_stops_per_year
 
 #MARYLAND STOP RATE
 
-plt.bar(x_axis,y_axis,color='brown')
-plt.title("Rate of Traffic Stops Maryland 2007-2013")
-plt.xlabel("Years")
-plt.ylabel("Rate of Stops")
-plt.ylim(ymin=0)
-plt.show()
+# plt.bar(x_axis,y_axis,color='brown')
+# plt.title("Rate of Traffic Stops Maryland 2007-2013")
+# plt.xlabel("Years")
+# plt.ylabel("Rate of Stops")
+# plt.ylim(ymin=0)
+# plt.show()

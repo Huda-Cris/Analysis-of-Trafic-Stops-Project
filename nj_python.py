@@ -193,7 +193,7 @@ search_rates.append(search_conducted_yt/search_conducted)
 search_rates.append(search_conducted_hp/search_conducted)
 search_rates.append(search_conducted_ap/search_conducted)
 search_rates.append(search_conducted_ot/search_conducted)
-print(search_rates)
+
 
 #Frisk Rate
 
@@ -210,7 +210,7 @@ frisk_rates.append(frisk_performed_yt/frisk_performed)
 frisk_rates.append(frisk_performed_hp/frisk_performed)
 frisk_rates.append(frisk_performed_ap/frisk_performed)
 frisk_rates.append(frisk_performed_ot/frisk_performed)
-print(frisk_rates)
+
 
 #HIT RATES
 contraband_found=len(nj_df.loc[(nj_df['contraband_found']==True)])
@@ -226,7 +226,8 @@ hit_rates.append(contraband_found_yt/search_conducted_yt)
 hit_rates.append(contraband_found_hp/search_conducted_hp)
 hit_rates.append(contraband_found_ap)
 hit_rates.append(contraband_found_ot/search_conducted_ot)
-print(hit_rates)
+
+
 
 
 
@@ -324,7 +325,7 @@ for dic in rate_stops_race_per_year:
         elif key=='other':
             tmp_ot.append(dic[key])
 
-tmp=["Black","White","Hispanic","Asian/pacific Islander","Other"]
+'''tmp=["Black","White","Hispanic","Asian/pacific Islander","Other"]
 x_axis=years
 y_axis=[tmp_bk,tmp_yt,tmp_hp,tmp_ap,tmp_ot]
 colors=['purple','blue','brown','green','yellow']
@@ -335,7 +336,7 @@ plt.title('Rate of Traffic Stops by Race per Year')
 plt.xlabel('Years')
 plt.ylabel('Rate of Stops')
 plt.legend()
-plt.show()
+plt.show()'''
 tmp_bk=[]
 tmp_yt=[]
 tmp_hp=[]

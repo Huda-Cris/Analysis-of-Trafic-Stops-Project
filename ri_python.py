@@ -149,7 +149,7 @@ search_rates.append(search_conducted_yt/search_conducted)
 search_rates.append(search_conducted_hp/search_conducted)
 search_rates.append(search_conducted_ap/search_conducted)
 search_rates.append(search_conducted_ot/search_conducted)
-print(search_rates)
+
 
 #Frisk Rate
 
@@ -166,7 +166,7 @@ frisk_rates.append(frisk_performed_yt/frisk_performed)
 frisk_rates.append(frisk_performed_hp/frisk_performed)
 frisk_rates.append(frisk_performed_ap/frisk_performed)
 frisk_rates.append(frisk_performed_ot/frisk_performed)
-print(frisk_rates)
+
 
 #HIT RATES
 contraband_found=len(ri_df.loc[(ri_df['contraband_found']==True)])
@@ -182,7 +182,7 @@ hit_rates.append(contraband_found_yt/search_conducted_yt)
 hit_rates.append(contraband_found_hp/search_conducted_hp)
 hit_rates.append(contraband_found_ap)
 hit_rates.append(contraband_found_ot/search_conducted_ot)
-print(hit_rates)
+
 
 # TYPES OF REASONS OF STOP
 reasons_search={}
@@ -269,8 +269,23 @@ for dic in rate_stops_race_per_year:
             tmp_ot.append(dic[key])
 
 
+reason_stop_sex=old_ri_df.groupby(['subject_sex','reason_for_stop']).search_conducted.mean()
+condition = old_ri_df.subject_sex.isin(["female", "male"]) & old_ri_df.reason_for_stop
 
-tmp=["Black","White","Hispanic","Asian/pacific Islander","Other"]
+search_type_by_sex = (old_ri_df[condition].
+  groupby("subject_sex").reason_for_stop.value_counts(normalize = True).unstack()
+)
+condition = old_ri_df.subject_race.isin(["white", "black", "hispanic", "asian"]) & old_ri_df.reason_for_stop
+reason_stop_race=old_ri_df.groupby(['subject_race','reason_for_stop']).search_conducted.mean()
+search_type_by_race = (old_ri_df[condition].
+  groupby("subject_race").reason_for_stop.value_counts(normalize = True).unstack()
+)
+search_type_by_race.plot(kind='bar')
+plt.title("Proportion of common search types across 4 races")
+plt.ylabel("Average Number of reasons")
+plt.show()
+
+'''tmp=["Black","White","Hispanic","Asian/pacific Islander","Other"]
 x_axis=years
 y_axis=[tmp_bk,tmp_yt,tmp_hp,tmp_ap,tmp_ot]
 colors=['purple','blue','brown','green','yellow']
@@ -281,7 +296,7 @@ plt.title('Rate of Traffic Stops by Race per Year')
 plt.xlabel('Years')
 plt.ylabel('Rate of Stops')
 plt.legend()
-plt.show()
+plt.show()'''
 
 
 '''tmp_ma=[]

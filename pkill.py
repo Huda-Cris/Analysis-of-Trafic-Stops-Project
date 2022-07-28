@@ -1,4 +1,5 @@
-import csv
+from re import S
+import xlrd
 import pandas as pd
 import glob
 import os
@@ -6,12 +7,9 @@ from datetime import date
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
+import openpyxl
 
-path = "/Users/hudaali/Downloads/ny_statewide_2020_04_01.csv"
-
-#generates connectticut csv files
-with open (path, "r") as ny_df:
-    df=pd.read_csv(ny_df)
-
-df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')   
-print(df['date'])
+path="/Users/hudaali/Downloads/MPVDatasetDownload.xlsx"
+df=pd.read_excel(path,sheet_name=1)
+df=pd.DataFrame(df)
+print(df.head())

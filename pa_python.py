@@ -199,10 +199,10 @@ hit_rate=p_tmp.groupby(['subject_race','district'])['contraband_found'].mean()
 
 
 white_hit_rate_filter=pa_df.loc[(pa_df['search_conducted']==True) & (pa_df['subject_race']=='white')]
-white_hit_rate=white_hit_rate_filter.groupby(['subject_race','district'])['contraband_found'].mean()
+white_hit_rate=white_hit_rate_filter.groupby(['subject_race','district']).contraband_found.mean()
 
 minority_hit_filter=pa_df.loc[(pa_df['search_conducted']==True) & (pa_df['subject_race']=='black')|(pa_df['subject_race']=='hispanic')]
-minority_hit_rate=(minority_hit_filter.groupby(['subject_race','district'])['contraband_found']).mean()
+minority_hit_rate=(minority_hit_filter.groupby(['subject_race','district']).contraband_found.mean())
 
 tmp_filter=pa_df.loc[(pa_df['subject_race']=='white')]
 num_searches_district=pa_df.groupby(['district'])['search_conducted'].count()
@@ -212,8 +212,7 @@ for i in range(len(white_hit_rate)):
 for i in range(len(minority_hit_rate)):
     minority_hit_rate[i]=minority_hit_rate[i]*100
 
-
-plt.scatter(white_hit_rate, minority_hit_rate['black'], facecolors='none', edgecolors='black')
+'''plt.scatter(white_hit_rate, minority_hit_rate['black'], facecolors='none', edgecolors='black')
 z = np.polyfit(white_hit_rate, minority_hit_rate['black'], 1)
 p = np.poly1d(z)
 plt.plot(white_hit_rate, p(white_hit_rate),color='brown',linestyle='--',linewidth=1)
@@ -234,7 +233,7 @@ plt.xlabel('White Hit Rates')
 plt.ylabel('Minority Hit Rates-HISPANIC')
 plt.ylim(0,80)
 plt.xlim(0,80)
-plt.show()
+plt.show()'''
 
 # NUMBER OF TIMES VEICLES WERE SEARCHED
 veh_search={}
@@ -255,7 +254,7 @@ for year in num_stops_year:
         else:
             tmp[val]=1
     num_veh_search_year.append(tmp)
-
+print(pa_df)
 
 with open("/Users/hudaali/Downloads/pa_notes.txt",'w+') as pa_notes:
     pa_notes.write("MINIMUM DATE:\n{}\n\n".format(pa_min_date))
@@ -310,15 +309,15 @@ tmp_ot=stop_rate_race_porp_pop['other']
 
 
 
-tmp=["Black","White","Hispanic","Asian/pacific Islander","Other"]
-x_axis=years
-y_axis=[tmp_bk,tmp_yt,tmp_hp,tmp_ap,tmp_ot]
-colors=['purple','blue','brown','green','yellow']
-for i in range(len(y_axis)):
-    plt.plot(x_axis, y_axis[i],label=tmp[i],color=colors[i],marker='o')
+# tmp=["Black","White","Hispanic","Asian/pacific Islander","Other"]
+# x_axis=years
+# y_axis=[tmp_bk,tmp_yt,tmp_hp,tmp_ap,tmp_ot]
+# colors=['purple','blue','brown','green','yellow']
+# for i in range(len(y_axis)):
+#     plt.plot(x_axis, y_axis[i],label=tmp[i],color=colors[i],marker='o')
 
-plt.title('Rate of Traffic Stops by Race per Year in Porportion of Demographic Population Size')
-plt.xlabel('Years')
-plt.ylabel('Rate of Stops')
-plt.legend()
-plt.show()
+# plt.title('Rate of Traffic Stops by Race per Year in Porportion of Demographic Population Size')
+# plt.xlabel('Years')
+# plt.ylabel('Rate of Stops')
+# plt.legend()
+# plt.show()
