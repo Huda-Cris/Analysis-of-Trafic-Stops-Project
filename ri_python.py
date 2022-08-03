@@ -94,6 +94,7 @@ num_ap_stopped=len(ri_df.loc[ri_df['subject_race']=='asian/pacific Islander'])
 num_ot_stopped=len(ri_df.loc[ri_df['subject_race']=='other'])
 tmp_above=[num_bk_stopped,num_yt_stopped,num_hp_stopped,num_ap_stopped,num_ot_stopped]
 
+print(num_stops_race_per_year)
 race_names=["black","white","hispanic","asian/pacific Islander","other"]
 stop_rate_race_porp_pop={
     'black':[],
@@ -103,18 +104,28 @@ stop_rate_race_porp_pop={
     'other':[]
     }
 
+tmp_bk=[1660, 6646, 5698, 6329, 6287, 5979, 6235, 8332, 6433, 7567, 7413]
+tmp_wt=[11362, 45993, 39033, 33042, 27535, 27961, 30368, 40025, 28216, 32519, 28680]
+tmp_hp=[310, 1127, 3835, 4750, 4788, 4412, 4788, 7563, 6173, 7452, 7927]
+tmp_ap=[416, 1624, 1419, 1340, 1089, 931, 1100, 1438, 1052, 1283, 1134]
+tmp_ot=[62, 164, 154, 111, 122, 160, 144, 268, 48, 59, 52]
+tmp_huda=[]
+for dic in num_stops_race_per_year:
+    tmp_huda.append(dic['other'])
 
-for i in aprox_pop_by_race['black']:
-    stop_rate_race_porp_pop['black'].append(num_bk_stopped/i)
-for i in aprox_pop_by_race['white']:
-    stop_rate_race_porp_pop['white'].append(num_yt_stopped/i)
-for i in aprox_pop_by_race['hispanic']:
-    stop_rate_race_porp_pop['hispanic'].append(num_hp_stopped/i)
-for i in aprox_pop_by_race['asian/pacific Islander']:
-    stop_rate_race_porp_pop['asian/pacific Islander'].append(num_ap_stopped/i)
-for i in aprox_pop_by_race['other']:
-    stop_rate_race_porp_pop['other'].append(num_ot_stopped/i)
+for i in range(len(aprox_pop_by_race['black'])):
+    stop_rate_race_porp_pop['black'].append(tmp_bk[i]/(aprox_pop_by_race['black'])[i])
+for i in range(len(aprox_pop_by_race['white'])):
+    stop_rate_race_porp_pop['white'].append(tmp_wt[i]/(aprox_pop_by_race['white'])[i])
 
+for i in range(len(aprox_pop_by_race['hispanic'])):
+    stop_rate_race_porp_pop['hispanic'].append(tmp_hp[i]/(aprox_pop_by_race['hispanic'])[i])
+for i in range(len(aprox_pop_by_race['asian/pacific Islander'])):
+    stop_rate_race_porp_pop['asian/pacific Islander'].append(tmp_ap[i]/(aprox_pop_by_race['asian/pacific Islander'])[i])
+for i in range(len(aprox_pop_by_race['other'])):
+    stop_rate_race_porp_pop['other'].append(tmp_ot[i]/(aprox_pop_by_race['other'])[i])
+
+print(stop_rate_race_porp_pop)
 # NUMBER OF STOPS BY SEX PER YEAR
 num_stops_sex_per_year=[]
 for year in num_stops_year:
@@ -280,10 +291,10 @@ reason_stop_race=old_ri_df.groupby(['subject_race','reason_for_stop']).search_co
 search_type_by_race = (old_ri_df[condition].
   groupby("subject_race").reason_for_stop.value_counts(normalize = True).unstack()
 )
-search_type_by_race.plot(kind='bar')
-plt.title("Proportion of common search types across 4 races")
-plt.ylabel("Average Number of reasons")
-plt.show()
+# search_type_by_race.plot(kind='bar')
+# plt.title("Proportion of common search types across 4 races")
+# plt.ylabel("Average Number of reasons")
+# plt.show()
 
 '''tmp=["Black","White","Hispanic","Asian/pacific Islander","Other"]
 x_axis=years
@@ -331,7 +342,7 @@ plt.legend()
 plt.show() '''
 
 
-'''tmp_bk=stop_rate_race_porp_pop['black']
+tmp_bk=stop_rate_race_porp_pop['black']
 tmp_yt=stop_rate_race_porp_pop['white']
 tmp_hp=stop_rate_race_porp_pop['hispanic']
 tmp_ap=stop_rate_race_porp_pop['asian/pacific Islander']
@@ -349,7 +360,7 @@ plt.xlabel('Years')
 plt.ylabel('Rate of Stops')
 plt.legend()
 plt.show()
-'''
+
 #MARYLAND STOP RATE
 
 '''plt.bar(x_axis,y_axis,color='brown')
